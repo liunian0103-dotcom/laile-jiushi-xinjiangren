@@ -93,8 +93,37 @@
       y: (event.clientY - rect.top) * height / rect.height };
   }
 
-  document.querySelectorAll("[data-fullscreen]").forEach(button => button.addEventListener("click", () => wide ? exit() : enter()));
-  document.getElementById("exitViewportMode").addEventListener("click", exit);
+  function bindModeButton(button, action) {
+    let press = null;
+    let ignoreClickUntil = 0;
+    button.addEventListener("pointerdown", event => {
+      if (event.pointerType !== "mouse" && event.isPrimary) {
+        press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+      }
+    });
+    button.addEventListener("pointermove", event => {
+      if (press?.id === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 12) press.moved = true;
+    });
+    button.addEventListener("pointercancel", () => { press = null; });
+    button.addEventListener("pointerup", event => {
+      if (!press || press.id !== event.pointerId) return;
+      const start = press;
+      press = null;
+      const hit = document.elementFromPoint(event.clientX, event.clientY);
+      if (start.moved || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 12 || !hit || !button.contains(hit)) return;
+      // Some mobile hosts suppress the first compatibility click after a drag.
+      // Handle the touch release directly, then ignore its delayed click.
+      ignoreClickUntil = performance.now() + 700;
+      event.preventDefault();
+      action();
+    });
+    button.addEventListener("click", event => {
+      if (performance.now() < ignoreClickUntil) { event.preventDefault(); return; }
+      action();
+    });
+  }
+  document.querySelectorAll("[data-fullscreen]").forEach(button => bindModeButton(button, () => wide ? exit() : enter()));
+  bindModeButton(document.getElementById("exitViewportMode"), exit);
   for (const name of ["resize", "orientationchange", "pageshow"]) window.addEventListener(name, schedule);
   window.visualViewport?.addEventListener("resize", schedule);
   window.visualViewport?.addEventListener("scroll", schedule);
