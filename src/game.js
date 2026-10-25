@@ -152,8 +152,8 @@ const SKILLS = [
     apply: s => { s.pierce++; },
   },
   {
-    id: "heal", category: "生命道具", title: "急救包", short: "立即恢复 1 颗心", text: "选择后立即恢复一颗生命；生命最多为三颗。",
-    current: () => `当前生命 ${lives}/3`,
+    id: "heal", category: "体力道具", title: "急救包", short: "恢复 1 格体力", text: "选择后立即恢复 1 格体力；体力上限 3 格。",
+    current: () => `当前体力 ${lives}/3`,
     after: () => `选择后 ${Math.min(3, lives + 1)}/3`,
     noLevel: true, apply: () => { lives = Math.min(3, lives + 1); updateHud(); },
   },
@@ -173,15 +173,23 @@ function skillIcon(id) {
 
 
 const hongshanBg = new Image();
-hongshanBg.src = "assets/stage-bazaar.png";
 const tianchiBg = new Image();
-tianchiBg.src = "assets/stage-sayram.png";
 const bazaarBg = new Image();
-bazaarBg.src = "assets/stage-nalati.png";
 const dabanBg = new Image();
-dabanBg.src = "assets/stage-kashgar.png";
 const dukuBg = new Image();
-dukuBg.src = "assets/stage-flame.png";
+const stageBackgrounds = [hongshanBg, bazaarBg, tianchiBg, dabanBg, dukuBg];
+const stageImageNames = ["bazaar", "nalati", "sayram", "kashgar", "flame"];
+function requestStageBackground(stage) {
+  const image = stageBackgrounds[stage - 1];
+  if (!image || image.naturalWidth) return;
+  const hasSource = !!image.getAttribute("src");
+  if (hasSource && (!image.complete || image.dataset.retried)) return;
+  if (hasSource) image.dataset.retried = "true";
+  image.decoding = "async";
+  image.fetchPriority = "low";
+  image.src = `assets/optimized/stage-${stageImageNames[stage - 1]}.webp${hasSource ? "?retry=1" : ""}`;
+}
+requestStageBackground(1);
 
 const bazaarIntroImg = new Image();
 // Retained only for the optional legacy intro; not loaded by the game.
@@ -265,6 +273,7 @@ let journeyStarted = false;
 let lastRunWon = false;
 let level = 1;
 let lives = 3;
+let healthDamageTimer = 0;
 let compass = 0;
 let totalHits = 0;
 let blocks = [];
@@ -327,11 +336,11 @@ function seededRandom(seed) {
 
 
 const ROUTE_STOPS = [
-  { name: "国际大巴扎", task: "大巴扎集合", image: "stage-bazaar.png", reward: 100 },
-  { name: "那拉提草原", task: "那拉提牧场突围", image: "stage-nalati.png", reward: 150 },
-  { name: "赛里木湖", task: "赛里木湖转线", image: "stage-sayram.png", reward: 200 },
-  { name: "喀什古城", task: "喀什古巷突围", image: "stage-kashgar.png", reward: 250 },
-  { name: "火焰山", task: "火焰山终局", image: "stage-flame.png", reward: 300 },
+  { name: "国际大巴扎", task: "大巴扎集合", image: "optimized/stage-bazaar.webp", reward: 100 },
+  { name: "那拉提草原", task: "那拉提牧场突围", image: "optimized/stage-nalati.webp", reward: 150 },
+  { name: "赛里木湖", task: "赛里木湖转线", image: "optimized/stage-sayram.webp", reward: 200 },
+  { name: "喀什古城", task: "喀什古巷突围", image: "optimized/stage-kashgar.webp", reward: 250 },
+  { name: "火焰山", task: "火焰山终局", image: "optimized/stage-flame.webp", reward: 300 },
 ];
 
 function routeActiveIndex() {
@@ -346,6 +355,7 @@ function updateRoutePage() {
   const allDone = routeProgress > ROUTE_STOPS.length;
   const collected = Math.min(routeProgress - 1, ROUTE_STOPS.length);
   const stop = ROUTE_STOPS[Math.max(0, active)] || ROUTE_STOPS[0];
+  requestStageBackground(Math.max(0, active) + 1);
   setText("#routeStageName", allDone ? "五站突围完成" : stop.name);
   setText("#routeReward", allDone ? "五站共 1000 积分" : `本关通关 +${stop.reward} 积分`);
   setText("#routeHeroName", selectedProfile?.name || "选择你的打工人");
@@ -457,6 +467,7 @@ function dismissIntro() {
 }
 
 function setupLevel() {
+  requestStageBackground(level);
   stageSafetyCharges = selectedProfile?.stageSafetyCharges || 0;
   firstLootClaimed = false;
   pendingLoot = 0;
@@ -566,8 +577,29 @@ function beep(frequency = 280, duration = 0.045, type = "square", volume = 0.025
 }
 
 function updateHud() {
-  ui.hearts.textContent = "♥ ".repeat(Math.max(0, lives)).trim() || "—";
+  const health = Math.max(0, Math.min(3, lives));
+  const previousHealth = Number(ui.hearts.dataset.health ?? health);
+  const healthFill = ui.hearts.querySelector("#healthFill");
+  const healthValue = ui.hearts.querySelector("#healthValue");
+  ui.hearts.dataset.health = String(health);
+  ui.hearts.setAttribute("role", "progressbar");
+  ui.hearts.setAttribute("aria-valuemin", "0");
+  ui.hearts.setAttribute("aria-valuemax", "3");
+  ui.hearts.setAttribute("aria-valuenow", String(health));
+  ui.hearts.setAttribute("aria-valuetext", `体力 ${health}/3`);
+  ui.hearts.classList.toggle("low", health <= 1);
+  if (healthFill) healthFill.style.width = `${health / 3 * 100}%`;
+  if (healthValue) healthValue.textContent = `${health}/3`;
+  if (health < previousHealth) {
+    clearTimeout(healthDamageTimer);
+    ui.hearts.classList.add("damage");
+    healthDamageTimer = setTimeout(() => ui.hearts.classList.remove("damage"), 450);
+  } else if (health > previousHealth) {
+    clearTimeout(healthDamageTimer);
+    ui.hearts.classList.remove("damage");
+  }
   ui.compass.textContent = compass;
+  window.XinjiangPoints?.setStage({ reward: ROUTE_STOPS[Math.min(level, 5) - 1].reward });
   updateHeroUi();
 }
 
@@ -601,6 +633,7 @@ function updateWallet(state) {
   if (!state) return;
   document.querySelectorAll("[data-wallet-balance]").forEach(node => { node.textContent = state.balance; });
   document.querySelectorAll("[data-coupon-count]").forEach(node => { node.textContent = state.coupons.length; });
+  window.XinjiangPoints?.setStage({ balance: state.balance });
 }
 
 function beginCharacterSelection() {
@@ -1249,6 +1282,7 @@ function openDeparture() {
   void ui.departureScene.offsetWidth;
   ui.departureScene.classList.add("flying");
   ui.departure.classList.add("open");
+  if (lastStageReward.awarded) window.XinjiangPoints?.celebrate(lastStageReward);
   ui.departureContinue.onclick = () => {
     if (finalFlight) {
       routeProgress = STAGES.length + 1;
@@ -1589,31 +1623,66 @@ function drawMetroBlock(b) {
   }
 }
 
+function drawSkillChest(b) {
+  // The suitcase is drawn directly: no atlas dependency, and no tiny floating label.
+  const w = b.w;
+  const h = b.h;
+  ctx.fillStyle = "rgba(16,29,38,.32)";
+  ctx.fillRect(4, 8, w - 4, h - 3);
+  ctx.fillStyle = COLORS.ink;
+  ctx.fillRect(w / 2 - 18, -5, 36, 12);
+  ctx.fillStyle = COLORS.gold;
+  ctx.fillRect(w / 2 - 12, -1, 24, 7);
+  ctx.fillStyle = COLORS.ink;
+  ctx.fillRect(0, 4, w, h - 4);
+  ctx.fillStyle = COLORS.gold;
+  ctx.fillRect(4, 8, w - 8, h - 12);
+  ctx.fillStyle = "#ffe4a0";
+  ctx.fillRect(8, 8, w - 16, 4);
+  ctx.fillStyle = "#bf8735";
+  ctx.fillRect(4, h - 8, w - 8, 4);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = COLORS.ink;
+  ctx.font = "900 27px 'Microsoft YaHei', sans-serif";
+  ctx.fillText("技能", w / 2, 36);
+
+  // HP has its own small corner instead of covering the title.
+  ctx.fillStyle = COLORS.ink;
+  ctx.fillRect(w - 22, 9, 15, 17);
+  ctx.fillStyle = COLORS.paper;
+  ctx.font = "900 13px 'Courier New', monospace";
+  ctx.fillText(String(Math.max(1, Math.ceil(b.hp))), w - 14.5, 22);
+
+  ctx.fillStyle = COLORS.ink;
+  ctx.fillRect(4, 42, w - 8, h - 46);
+  ctx.fillStyle = COLORS.paper;
+  ctx.font = "800 16px 'Microsoft YaHei', sans-serif";
+  ctx.fillText("击破选技能", w / 2, h - 6);
+}
+
 function drawBlock(b) {
   ctx.save();
   const isLoot = b.kind === "loot";
-  const pulse = isLoot ? 1 + Math.sin(lastTime / 105 + b.pulse) * .035 : 1;
+  const pulse = isLoot ? 1 + Math.sin(lastTime / 220 + b.pulse) * .012 : 1;
   ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
   const impact = Math.max(0, 1 - (lastTime - (b.hitAt || -1000)) / 150);
   ctx.scale(pulse * (1 + impact * .07), pulse * (1 - impact * .12));
   ctx.translate(-b.w / 2, -b.h / 2);
   if (impact > 0) {
     ctx.fillStyle = `rgba(255,209,102,${impact * .7})`;
-    ctx.fillRect(-6, -7, b.w + 12, b.h + 14);
+    const padX = isLoot ? 2 : 6;
+    const padY = isLoot ? 2 : 7;
+    ctx.fillRect(-padX, -padY, b.w + padX * 2, b.h + padY * 2);
   }
 
   if (isLoot) {
-    ctx.globalAlpha = .55 + Math.sin(lastTime / 120 + b.pulse) * .15;
-    ctx.strokeStyle = COLORS.gold;
-    ctx.lineWidth = 4;
-    ctx.strokeRect(-6, -7, b.w + 12, b.h + 14);
-    ctx.globalAlpha = .2;
-    ctx.lineWidth = 3;
-    ctx.strokeRect(-11, -12, b.w + 22, b.h + 24);
-    ctx.globalAlpha = 1;
+    drawSkillChest(b);
+    ctx.restore();
+    return;
   }
 
-  const atlas = cleanedBlockAtlas || (blockAtlasImage.complete ? blockAtlasImage : null);
+  const atlas = cleanedBlockAtlas || (blockAtlasImage.complete && blockAtlasImage.naturalWidth > 0 ? blockAtlasImage : null);
   if (atlas) {
     const kindIndex = b.kind === "creature"
       ? Math.max(0, Math.min(2, b.variant || 0))
@@ -1640,18 +1709,6 @@ function drawBlock(b) {
   ctx.strokeText(String(hp), b.w / 2, b.h - 4);
   ctx.fillStyle = "#ffffff";
   ctx.fillText(String(hp), b.w / 2, b.h - 4);
-
-  if (isLoot) {
-    ctx.fillStyle = COLORS.coral;
-    ctx.strokeStyle = COLORS.ink;
-    ctx.lineWidth = 2;
-    ctx.fillRect(5, -8, 44, 18);
-    ctx.strokeRect(5, -8, 44, 18);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "950 10px 'Courier New', monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("技能箱", 27, 5);
-  }
 
   if (b.hp / b.maxHp < .5) {
     // 残血裂纹：深色斜线代替亮红整框描边，避免与背景红元素混淆
@@ -1836,28 +1893,13 @@ function drawCharacterSprite(characterId, portrait, x, y, w, h) {
 function drawLauncher() {
   ctx.save();
   ctx.translate(LAUNCH.x, LAUNCH.y);
-  ctx.fillStyle = "rgba(255,247,232,.94)";
-  ctx.strokeStyle = COLORS.ink;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(-128, 12);
-  ctx.lineTo(-112, -18);
-  ctx.lineTo(108, -18);
-  ctx.lineTo(128, 12);
-  ctx.lineTo(108, 25);
-  ctx.lineTo(-112, 25);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.strokeStyle = "rgba(7,20,46,.35)";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(-76, -4);
-  ctx.lineTo(70, -4);
-  ctx.moveTo(-38, 12);
-  ctx.lineTo(90, 12);
-  ctx.stroke();
+  // A compact landing mark keeps the health bar below the player visually separate.
+  ctx.fillStyle = "rgba(16,29,38,.36)";
+  ctx.fillRect(-50, 3, 100, 8);
+  ctx.fillStyle = COLORS.ink;
+  ctx.fillRect(-39, -1, 78, 8);
+  ctx.fillStyle = COLORS.gold;
+  ctx.fillRect(-34, 0, 68, 3);
 
   if (mode === "aim" || mode === "paused" || mode === "menu" || dragging) {
     const bob = Math.sin(lastTime / 260) * 2;
@@ -2063,19 +2105,39 @@ function setLoadingProgress(value) {
   document.querySelector("#startBtn").hidden = false;
 }
 
-const loadImages = [hongshanBg, tianchiBg, bazaarBg, dabanBg, dukuBg, blockAtlasImage,
+// Only small, interactive assets gate the first action. Scenery loads independently.
+const loadImages = [blockAtlasImage,
   ...Array.from(heroImages.values()).flatMap(images => [images.artwork, images.portrait])];
 let loadedImages = 0;
+let failedImages = 0;
 document.querySelector("#startBtn").hidden = true;
-Promise.all(loadImages.map(image => image.decode().then(() => {
-  loadedImages++;
-  setLoadingProgress(loadedImages / loadImages.length * 99);
-}))).then(() => {
+function enablePlay(degraded = false) {
+  if (assetsReady) return;
   assetsReady = true;
   setLoadingProgress(100);
-}).catch(() => {
-  document.querySelector(".loading-copy span").textContent = "素材加载失败，请刷新重试";
-  document.querySelector("#startBtn").hidden = true;
+  document.querySelector("#game-shell").classList.toggle("asset-degraded", degraded);
+  if (degraded) {
+    document.querySelector("#loadingReady").textContent = "部分图片暂未就绪，可以先开始。";
+    setTimeout(() => loadImages.forEach(image => {
+      if (!image.complete || image.naturalWidth || !image.src) return;
+      const retry = new URL(image.src, location.href);
+      retry.searchParams.set("retry", "1");
+      image.src = retry.href;
+    }), 3000);
+  }
+  // These four backgrounds total just 28 KB and never block the start button.
+  const preload = () => [2, 3, 4, 5].forEach(requestStageBackground);
+  if (window.requestIdleCallback) requestIdleCallback(preload, { timeout: 2000 });
+  else setTimeout(preload, 300);
+}
+const loadingDeadline = setTimeout(() => enablePlay(true), 12000);
+Promise.all(loadImages.map(image => image.decode().catch(() => { failedImages++; }).finally(() => {
+  loadedImages++;
+  if (!assetsReady) setLoadingProgress(loadedImages / loadImages.length * 99);
+}))).then(() => {
+  clearTimeout(loadingDeadline);
+  enablePlay(failedImages > 0);
+  if (!failedImages) document.querySelector("#game-shell").classList.remove("asset-degraded");
 });
 
 function moduleRoot(id) {

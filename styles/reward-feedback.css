@@ -1,0 +1,19 @@
+/* Pending reward is the battle's one gold number. Earned value lives in the wallet. */
+.points-hud{grid-column:1;grid-row:1;justify-self:start;display:grid;grid-template-columns:auto auto;align-items:baseline;column-gap:.8cqw;row-gap:2px;padding:.55cqw 1cqw .6cqw;background:#101d26ee;border-left:3px solid #e9b95e;color:#f4eddc;font-family:"Microsoft YaHei","PingFang SC",sans-serif;white-space:nowrap}
+.points-goal-label{font-size:clamp(10px,1.05cqw,14px);color:#d6d7c9}
+.points-goal{display:flex;align-items:baseline;gap:.35cqw;color:#e9b95e}
+.points-goal-value{font:800 clamp(23px,2.8cqw,37px)/1.05 Consolas,monospace;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.points-goal>span{font-size:clamp(10px,1cqw,13px)}
+.points-wallet{grid-column:1/-1;color:#b4c0c0;font-size:clamp(9px,1cqw,13px)}
+.points-wallet-value{margin-left:.5cqw;color:#f4eddc;font-family:Consolas,monospace;font-variant-numeric:tabular-nums;font-weight:500}
+.hud:has(.points-hud)>.stage{grid-column:2;grid-row:1}
+.hud:has(.points-hud)>.square-btn{grid-column:3;grid-row:1}
+#game-shell:has(.modal.open) .points-hud{visibility:hidden}
+.departure-copy .points-reward-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:.7cqw;margin:0 0 .4cqh;line-height:1.1;max-width:100%;transform-origin:left center}
+.points-earned-amount{font:900 clamp(38px,5.7cqw,73px)/1 Consolas,monospace;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.points-earned-unit{font:700 clamp(12px,1.45cqw,19px)/1.35 "Microsoft YaHei",sans-serif;color:#e9b95e}
+.departure-copy .points-redemption-hint{margin:.6cqh 0 2.5cqh;color:#b4c0c0;font-size:clamp(10px,1.05cqw,14px);line-height:1.5}
+.points-earned{animation:points-arrive .52s cubic-bezier(.2,.7,.2,1) both}
+@keyframes points-arrive{0%{opacity:.15;transform:translateY(8px) scale(.94)}60%{opacity:1;transform:translateY(0) scale(1.025)}100%{opacity:1;transform:none}}
+@media(max-height:450px) and (min-width:540px){.departure-copy .points-redemption-hint{margin-bottom:1.8cqh}.departure-copy .points-reward-line{gap:.6cqw}.points-hud{padding:.55cqw .8cqw}}
+@media(prefers-reduced-motion:reduce){.points-earned{animation:none}}
