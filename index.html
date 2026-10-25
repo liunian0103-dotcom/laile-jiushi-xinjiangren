@@ -27,16 +27,16 @@ SOFTWARE.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#101d26">
-  <meta name="description" content="选一个打工人，打穿五站新疆。牛马突围：乌鲁木齐篇，一款即开即玩的像素弹射小游戏。">
-  <title>牛马突围 · 乌鲁木齐篇</title>
+  <meta name="description" content="选一个打工人，打穿五站新疆。来了就是新疆人，一款即开即玩的像素弹射小游戏。">
+  <title>来了就是新疆人</title>
   <link rel="icon" href="assets/characters/chen-xu-portrait.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles/characters.css?v=6e8423f179">
   <link rel="stylesheet" href="styles/rewards.css?v=bccc361b93">
-  <link rel="stylesheet" href="styles.css?v=90eddfde7a">
+  <link rel="stylesheet" href="styles.css?v=4b9c3560dc">
 </head>
 <body>
-<main id="app" aria-label="牛马突围游戏">
+<main id="app" aria-label="来了就是新疆人游戏">
   <section id="game-shell">
     <canvas id="game" width="1280" height="720" aria-label="弹射游戏场地"></canvas>
     <button id="qaCompleteBtn" type="button" hidden>QA 完成本关</button>
@@ -64,8 +64,8 @@ SOFTWARE.
     <section class="modal open" id="startModal" role="dialog" aria-modal="true" aria-labelledby="gameTitle">
       <div class="home-scene" aria-hidden="true"><div class="home-travelers"><img src="assets/characters/lu-xiao.svg" alt=""><img src="assets/characters/chen-xu.svg" alt=""><img src="assets/characters/lin-wan.svg" alt=""></div></div>
       <div class="home-content">
-        <p class="eyebrow">乌鲁木齐篇</p>
-        <h1 id="gameTitle">牛马<br>突围<span class="title-dot">.</span></h1>
+        <p class="eyebrow">打工人的新疆旅行</p>
+        <h1 id="gameTitle">来了就是<br>新疆人<span class="title-dot">.</span></h1>
         <p class="home-line">下班了，轮到你出发。</p>
         <div class="cover-controls">
           <div id="loadingState" aria-live="polite"><div class="loading-copy"><span>装好行囊</span><b id="loadingPercent">0%</b></div><div class="loading-track"><i id="loadingProgress"></i></div></div>
@@ -74,7 +74,7 @@ SOFTWARE.
           <div class="home-links"><button type="button" data-open-shop>新疆礼遇 <span>↗</span></button><button type="button" data-open-coupons>我的券 <span data-coupon-count>0</span></button></div>
         </div>
       </div>
-      <div class="home-footer"><span>拖动瞄准 · 松手发射</span><span>旅行积分 <b data-wallet-balance>0</b></span></div>
+      <div class="home-footer"><span>拖动瞄准 · 松手发射 <button class="text-btn fullscreen-btn" data-fullscreen type="button">全屏 ↗</button></span><span>旅行积分 <b data-wallet-balance>0</b></span></div>
     </section>
 
     <section class="modal route-modal" id="routeModal" role="dialog" aria-modal="true" aria-label="新疆五站路线">
@@ -86,11 +86,10 @@ SOFTWARE.
     <section class="modal" id="departureModal" role="dialog" aria-modal="true" aria-labelledby="departureTitle"><div class="departure-panel"><div class="departure-scene" aria-hidden="true"></div><div class="departure-copy"><p class="eyebrow" id="departureKicker">本站突围完成</p><h2 id="departureTitle">这一站，拿下。</h2><blockquote id="departureQuote"></blockquote><strong class="stage-reward" id="stageRewardText">+100 旅行积分</strong><button class="primary-btn" id="departureContinue">继续突围 →</button><button class="text-btn" type="button" data-open-shop>去看看新疆礼遇 ↗</button></div></div></section>
     <section class="modal" id="upgradeModal" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle"><div class="paper-panel upgrade-panel"><p class="eyebrow">本站已完成</p><h2 id="upgradeTitle">带上一件，再出发。</h2><p class="upgrade-sub">选择一项强化，保留到本局结束</p><div class="upgrade-grid" id="upgradeGrid"></div></div></section>
     <section class="modal" id="skillModal" role="dialog" aria-modal="true" aria-labelledby="skillTitle"><div class="paper-panel skill-panel"><p class="eyebrow">发现技能箱</p><h2 id="skillTitle">下一发，更有底气。</h2><p class="upgrade-sub">选择一项技能</p><div class="skill-learn-grid" id="skillLearnGrid"></div></div></section>
-    <section class="modal" id="pauseModal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="paper-panel compact-panel"><p class="eyebrow">歇一会儿</p><h2 id="pauseTitle">旅途暂停</h2><button class="primary-btn" id="resumeBtn">继续突围</button><button class="secondary-btn" id="restartBtn">换个角色，重新出发</button><button class="text-btn" data-go-home type="button">结束本局，返回首页</button></div></section>
+    <section class="modal" id="pauseModal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="paper-panel compact-panel"><p class="eyebrow">歇一会儿</p><h2 id="pauseTitle">旅途暂停</h2><button class="primary-btn" id="resumeBtn">继续突围</button><button class="secondary-btn" data-fullscreen type="button">全屏游玩 ↗</button><button class="secondary-btn" id="restartBtn">换个角色，重新出发</button><button class="text-btn" data-go-home type="button">结束本局，返回首页</button></div></section>
     <section class="modal" id="endModal" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="paper-panel ending-panel"><p class="eyebrow" id="endKicker">五站突围完成</p><h2 id="endTitle">把远方，带回来。</h2><p id="endSoul" class="ending-soul"></p><p id="endSummary"></p><p id="endNote" hidden></p><div class="end-wallet">旅行积分 <strong data-wallet-balance>0</strong><button type="button" class="text-btn" data-open-shop>兑换新疆礼遇 ↗</button></div><button class="primary-btn" id="againBtn">再出发一次</button><button class="text-btn" data-go-home type="button">返回首页</button></div></section>
   </section>
-  <aside id="rotatePrompt" aria-live="polite"><span class="rotate-phone" aria-hidden="true">↻</span><h2>横过来，就出发。</h2><p>弹射需要更宽的视野</p></aside>
 </main>
 <div id="characterRoot"></div><div id="rewardsRoot"></div>
-<script src="src/characters.js?v=24fc765106"></script><script src="src/rewards.js?v=659561e249"></script><script src="src/game.js?v=87a01fffad"></script>
+<script src="src/characters.js?v=7f3f5c5aef"></script><script src="src/rewards.js?v=659561e249"></script><script src="src/game.js?v=9b252c6460"></script>
 </body></html>

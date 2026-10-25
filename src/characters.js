@@ -106,7 +106,7 @@
     screen.innerHTML = `
       <div class="nc-panel">
         <header class="nc-header">
-          <div><p class="nc-eyebrow">牛马突围 / 出发登记</p><h1 id="${prefix}-title">今天，换你选自己。</h1></div>
+          <div><p class="nc-eyebrow">选择角色</p><h1 id="${prefix}-title">今天，换你选自己。</h1></div>
           <button type="button" class="nc-close" aria-label="关闭选角">×</button>
         </header>
         <div class="nc-roster" role="radiogroup" aria-label="选择一位出发的打工人">

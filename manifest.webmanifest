@@ -1,9 +1,9 @@
 {
-  "name": "牛马突围 · 乌鲁木齐篇",
-  "short_name": "牛马突围",
+  "name": "来了就是新疆人",
+  "short_name": "来了就是新疆人",
   "start_url": "./",
   "display": "fullscreen",
-  "orientation": "landscape",
+  "orientation": "any",
   "background_color": "#101d26",
   "theme_color": "#101d26"
 }

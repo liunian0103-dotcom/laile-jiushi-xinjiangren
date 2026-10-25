@@ -2016,6 +2016,7 @@ window.addEventListener("keydown", eventLike => {
     return;
   }
   if (eventLike.key === "Escape" && mode === "paused") document.querySelector("#resumeBtn").click();
+  else if (eventLike.key === "Escape" && (mode === "aim" || mode === "firing")) document.querySelector("#pauseBtn").click();
   if ((eventLike.key === " " || eventLike.key === "Enter") && mode === "aim") startVolley();
 });
 
@@ -2090,28 +2091,36 @@ document.querySelectorAll("[data-open-coupons]").forEach(button => button.addEve
 renderSkillRack();
 updateHud();
 
-/* 移动端方向检测兜底：部分手机浏览器旋转后媒体查询不及时刷新，
-   这里用实测视口比例判定，直接给 body 打 force-landscape / force-portrait */
+// Orientation is advisory only. Embedded browsers can report a stale viewport;
+// never put an orientation curtain in front of the playable game.
 function syncOrientation() {
-  const mobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const portrait = mobileDevice && window.innerHeight > window.innerWidth;
-  document.body.classList.toggle("force-portrait", portrait);
-  document.body.classList.toggle("force-landscape", !portrait);
+  const viewport = window.visualViewport;
+  const width = viewport?.width || window.innerWidth;
+  const height = viewport?.height || window.innerHeight;
+  document.body.classList.remove('force-portrait', 'force-landscape');
+  document.body.dataset.viewport = width >= height ? 'wide' : 'tall';
 }
-
 syncOrientation();
-window.addEventListener("resize", syncOrientation);
-window.addEventListener("orientationchange", () => {
+window.addEventListener('resize', syncOrientation);
+window.addEventListener('orientationchange', syncOrientation);
+window.visualViewport?.addEventListener('resize', syncOrientation);
+window.screen?.orientation?.addEventListener?.('change', syncOrientation);
+document.querySelectorAll('[data-fullscreen]').forEach(button => button.addEventListener('click', async () => {
+  const element = document.documentElement;
+  try {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      await (document.exitFullscreen?.() || document.webkitExitFullscreen?.());
+    } else if (element.requestFullscreen) {
+      await element.requestFullscreen();
+      try { await window.screen?.orientation?.lock?.('landscape'); } catch (_) {}
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else {
+      showToast('此浏览器不支持全屏，可以直接游玩');
+    }
+  } catch (_) { showToast('可以直接游玩，或使用浏览器菜单进入全屏'); }
   syncOrientation();
-  // 旋转动画结束后再校正一次，拿到稳定的视口尺寸
-  window.setTimeout(syncOrientation, 260);
-  window.setTimeout(syncOrientation, 620);
-});
-window.screen?.orientation?.addEventListener?.("change", () => {
-  syncOrientation();
-  window.setTimeout(syncOrientation, 260);
-});
+}));
 
 requestAnimationFrame(loop);
 
