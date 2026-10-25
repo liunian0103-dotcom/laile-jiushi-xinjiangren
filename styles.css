@@ -32,3 +32,6 @@
 #game-shell:has(.modal.open) .health-bar{visibility:hidden}.toast{bottom:3.2%;max-width:43%;font-size:clamp(10px,1.1cqw,14px);padding:7px 12px}
 @keyframes health-hit{0%,40%{filter:brightness(1.8)}20%,60%{filter:brightness(1)}80%{filter:brightness(1.3)}}
 .asset-degraded .loading-ready{display:block!important;font-size:clamp(10px,1cqw,13px);color:var(--muted);margin-bottom:10px}.route-picture{background:#243843}
+.first-load-note{font-size:clamp(10px,1cqw,13px);line-height:1.5;color:var(--muted);margin:0 0 10px}.mobile-browser-note{display:none}
+@media(hover:none) and (pointer:coarse){.mobile-browser-note{position:absolute;z-index:25;top:max(8px,calc((100% - min(100%,56.25vw))/2 - 54px));left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:2px;width:max-content;max-width:92%;padding:6px 12px;background:#101d26ed;border:1px solid #46535a66;text-align:center;font-size:11px;line-height:1.5;color:var(--paper);pointer-events:none}.mobile-browser-note small{font-size:10px;color:#b4c0c0}.first-load-note{display:none}}
+#app:not(:has(#startModal.open)) .mobile-browser-note{display:none}

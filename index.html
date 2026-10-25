@@ -33,7 +33,7 @@ SOFTWARE.
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles/characters.css?v=6e8423f179">
   <link rel="stylesheet" href="styles/rewards.css?v=bccc361b93">
-  <link rel="stylesheet" href="styles.css?v=f96bb09a17">
+  <link rel="stylesheet" href="styles.css?v=5f12d74d60">
   <link rel="stylesheet" href="styles/reward-feedback.css?v=c2acd53a7f">
 </head>
 <body>
@@ -69,7 +69,7 @@ SOFTWARE.
         <h1 id="gameTitle">来了就是<br>新疆人<span class="title-dot">.</span></h1>
         <p class="home-line">下班了，轮到你出发。</p>
         <div class="cover-controls">
-          <div id="loadingState" aria-live="polite"><div class="loading-copy"><span>装好行囊</span><b id="loadingPercent">0%</b></div><div class="loading-track"><i id="loadingProgress"></i></div></div>
+          <div id="loadingState" aria-live="polite"><div class="loading-copy"><span>装好行囊</span><b id="loadingPercent">0%</b></div><div class="loading-track"><i id="loadingProgress"></i></div><p class="first-load-note">首次打开可能需要更多时间，请稍候。</p></div>
           <p id="loadingReady" class="loading-ready" hidden>选择角色，打穿五站新疆。</p>
           <button class="primary-btn" id="startBtn" hidden>开始突围 <span>→</span></button>
           <div class="home-links"><button type="button" data-open-shop>新疆礼遇 <span>↗</span></button><button type="button" data-open-coupons>我的券 <span data-coupon-count>0</span></button></div>
@@ -90,6 +90,7 @@ SOFTWARE.
     <section class="modal" id="pauseModal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="paper-panel compact-panel"><p class="eyebrow">歇一会儿</p><h2 id="pauseTitle">旅途暂停</h2><button class="primary-btn" id="resumeBtn">继续突围</button><button class="secondary-btn" data-fullscreen type="button">全屏游玩 ↗</button><button class="secondary-btn" id="restartBtn">换个角色，重新出发</button><button class="text-btn" data-go-home type="button">结束本局，返回首页</button></div></section>
     <section class="modal" id="endModal" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="paper-panel ending-panel"><p class="eyebrow" id="endKicker">五站突围完成</p><h2 id="endTitle">把远方，带回来。</h2><p id="endSoul" class="ending-soul"></p><p id="endSummary"></p><p id="endNote" hidden></p><div class="end-wallet">旅行积分 <strong data-wallet-balance>0</strong><button type="button" class="text-btn" data-open-shop>兑换新疆礼遇 ↗</button></div><button class="primary-btn" id="againBtn">再出发一次</button><button class="text-btn" data-go-home type="button">返回首页</button></div></section>
   </section>
+  <aside class="mobile-browser-note" aria-label="手机游玩提示"><span>推荐使用手机浏览器打开，横屏体验更佳</span><small>首次打开可能需要更多时间，请稍候。</small></aside>
 </main>
 <div id="characterRoot"></div><div id="rewardsRoot"></div>
 <script src="src/characters.js?v=7f3f5c5aef"></script><script src="src/rewards.js?v=659561e249"></script><script src="src/reward-feedback.js?v=bf2c1adc9e"></script><script src="src/game.js?v=d40e0c0e93"></script>
