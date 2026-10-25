@@ -1,0 +1,61 @@
+.niuma-rewards { --nr-ink:#07142e; --nr-paper:#fff7e8; --nr-blue:#123bee; --nr-mint:#a8e6cf; --nr-gold:#ffd166; --nr-coral:#ff6b57; position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:16px; background:#07142ed9; color:var(--nr-ink); font:15px/1.5 "Microsoft YaHei", "PingFang SC", sans-serif; touch-action:pan-y; overscroll-behavior:contain; isolation:isolate; }
+.niuma-rewards[hidden] { display:none !important; }
+.niuma-rewards *, .niuma-rewards *::before, .niuma-rewards *::after { box-sizing:border-box; }
+.niuma-rewards h2, .niuma-rewards h3, .niuma-rewards p { margin:0; }
+.niuma-rewards strong { color:inherit; }
+.niuma-rewards button { min-height:44px; border:2px solid var(--nr-ink); border-radius:3px; padding:8px 14px; background:var(--nr-blue); color:white; font:700 14px/1.35 "Microsoft YaHei", sans-serif; cursor:pointer; touch-action:manipulation; }
+.niuma-rewards button:hover { filter:brightness(1.12); }
+.niuma-rewards button:focus-visible, .niuma-rewards .nr-sheet:focus-visible { outline:3px solid var(--nr-coral); outline-offset:3px; }
+.niuma-rewards .nr-sheet { width:min(960px,100%); max-height:100%; overflow:auto; overscroll-behavior:contain; background:var(--nr-paper); border:3px solid var(--nr-ink); box-shadow:7px 7px 0 #123bee; padding:24px; }
+.niuma-rewards .nr-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.niuma-rewards .nr-eyebrow { color:var(--nr-blue); font-size:12px; font-weight:800; letter-spacing:2px; }
+.niuma-rewards h2 { font:900 clamp(23px,4vw,34px)/1.4 "Microsoft YaHei", sans-serif; letter-spacing:-1px; }
+.niuma-rewards .nr-close { width:44px; flex:none; padding:0; font-size:26px; background:var(--nr-ink); }
+.niuma-rewards .nr-disclaimer { background:var(--nr-gold); padding:9px 12px; border:2px solid var(--nr-ink); margin-top:14px; font-weight:800; }
+.niuma-rewards .nr-wallet { margin:16px 0; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px 16px; background:var(--nr-blue); color:white; border:2px solid var(--nr-ink); }
+.niuma-rewards .nr-wallet > div { display:flex; align-items:center; gap:18px; }
+.niuma-rewards .nr-wallet strong { font:900 38px/1.2 "Courier New", monospace; }
+.niuma-rewards .nr-wallet p { font-size:12px; }
+.niuma-rewards .nr-tabs { display:flex; gap:8px; border-bottom:2px solid var(--nr-ink); padding-bottom:10px; }
+.niuma-rewards .nr-tabs button { background:transparent; color:var(--nr-ink); }
+.niuma-rewards .nr-tabs button[aria-pressed="true"] { background:var(--nr-ink); color:white; }
+.niuma-rewards .nr-status { min-height:32px; padding:5px 0; font-weight:700; color:var(--nr-blue); }
+.niuma-rewards .nr-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+.niuma-rewards .nr-ticket { min-width:0; background:white; border:2px solid var(--nr-ink); box-shadow:3px 3px 0 var(--nr-ink); }
+.niuma-rewards .nr-ticket-top { display:flex; align-items:center; justify-content:space-between; gap:4px; padding:8px 10px; background:var(--nr-mint); border-bottom:2px solid var(--nr-ink); font-size:11px; font-weight:800; }
+.niuma-rewards .nr-dates .nr-ticket-top { background:var(--nr-coral); }
+.niuma-rewards .nr-dairy .nr-ticket-top { background:#b7d8ff; }
+.niuma-rewards .nr-gift .nr-ticket-top { background:var(--nr-gold); }
+.niuma-rewards .nr-stamp { display:inline-block; border:1px solid currentColor; padding:1px 5px; font-size:11px; font-weight:800; }
+.niuma-rewards .nr-product { padding:14px 10px 0; }
+.niuma-rewards .nr-icon { display:block; font-size:34px; line-height:1.2; margin-bottom:12px; }
+.niuma-rewards h3 { font-size:17px; font-weight:900; }
+.niuma-rewards .nr-product p { font-size:11px; margin-top:5px; }
+.niuma-rewards .nr-value { padding:8px 10px 14px; display:flex; gap:8px; align-items:center; }
+.niuma-rewards .nr-value strong { font:900 48px/1 "Courier New", monospace; letter-spacing:-3px; }
+.niuma-rewards .nr-value strong small { font-size:20px; letter-spacing:0; }
+.niuma-rewards .nr-value span { font-weight:800; }
+.niuma-rewards .nr-value span small { display:block; font-size:10px; font-weight:400; }
+.niuma-rewards .nr-ticket-bottom { position:relative; border-top:2px dashed var(--nr-ink); padding:12px 10px; }
+.niuma-rewards .nr-ticket-bottom::before, .niuma-rewards .nr-ticket-bottom::after { content:""; position:absolute; width:12px; height:12px; top:-7px; background:var(--nr-paper); border:2px solid var(--nr-ink); border-radius:50%; }
+.niuma-rewards .nr-ticket-bottom::before { left:-7px; }
+.niuma-rewards .nr-ticket-bottom::after { right:-7px; }
+.niuma-rewards .nr-cost { margin-bottom:8px; font-size:12px; }
+.niuma-rewards .nr-cost b { font:900 22px "Courier New", monospace; }
+.niuma-rewards .nr-ticket-bottom button { width:100%; padding:8px 4px; }
+.niuma-rewards .nr-ticket-bottom p { font-size:11px; margin-bottom:8px; }
+.niuma-rewards .nr-number { overflow-wrap:anywhere; user-select:text; -webkit-user-select:text; font-family:"Courier New", "Microsoft YaHei", monospace; }
+.niuma-rewards .nr-empty { grid-column:1/-1; text-align:center; padding:26px 16px; border:2px dashed var(--nr-ink); }
+.niuma-rewards .nr-empty > span { font-size:42px; }
+.niuma-rewards .nr-empty p { margin:8px 0 18px; }
+.niuma-rewards .nr-footer { margin-top:20px; font-size:11px; text-align:center; }
+.niuma-rewards .nr-warning { border:2px solid var(--nr-coral); padding:10px; margin-bottom:12px; font-weight:700; }
+.niuma-rewards .nr-dialog-backdrop { position:absolute; inset:0; background:#07142edb; display:grid; place-items:center; padding:16px; }
+.niuma-rewards .nr-dialog { background:var(--nr-paper); width:min(460px,100%); max-height:100%; overflow:auto; border:3px solid var(--nr-ink); box-shadow:6px 6px 0 var(--nr-mint); padding:22px; }
+.niuma-rewards .nr-dialog h3 { font-size:24px; margin:14px 0; }
+.niuma-rewards .nr-dialog p { margin-top:10px; }
+.niuma-rewards .nr-actions { margin-top:20px; display:flex; justify-content:flex-end; gap:10px; }
+.niuma-rewards .nr-secondary { background:white; color:var(--nr-ink); }
+@media (max-width:760px) { .niuma-rewards .nr-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .niuma-rewards .nr-sheet { padding:16px; } }
+@media (max-width:400px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:12px; } .niuma-rewards .nr-grid { gap:10px; } .niuma-rewards .nr-wallet { align-items:flex-start; } .niuma-rewards .nr-wallet > div { display:block; } .niuma-rewards .nr-wallet strong { display:block; } .niuma-rewards .nr-wallet p { max-width:120px; } .niuma-rewards h3 { font-size:15px; } .niuma-rewards .nr-value { gap:4px; } .niuma-rewards .nr-value strong { font-size:40px; } }
+@media (max-height:500px) and (min-width:650px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:14px; } .niuma-rewards .nr-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .niuma-rewards .nr-icon { font-size:26px; margin-bottom:6px; } }

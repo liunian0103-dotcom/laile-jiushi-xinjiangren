@@ -1,0 +1,108 @@
+/* The game disables touch on :root. Permit overlay scrolling only while open. */
+html:has(.nc-screen:not([hidden])) { touch-action: pan-y; }
+/* All remaining rules are scoped to the character module. */
+.nc-screen {
+  --nc-ink: #07142e;
+  --nc-paper: #fff7e8;
+  --nc-blue: #123bee;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: max(16px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  display: flex;
+  color: var(--nc-paper);
+  background: #07142e;
+  font: 15px/1.5 "Microsoft YaHei", "PingFang SC", sans-serif;
+  text-align: left;
+}
+.nc-screen[hidden] { display: none; }
+.nc-screen *, .nc-screen *::before, .nc-screen *::after { box-sizing: border-box; }
+.nc-screen button { font: inherit; cursor: pointer; border-radius: 0; }
+.nc-screen button:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
+.nc-panel { width: min(1060px, 100%); margin: auto; min-width: 0; }
+.nc-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 22px; }
+.nc-eyebrow { margin: 0 0 6px; font: 700 12px/1.2 "Courier New", "Microsoft YaHei", monospace; letter-spacing: 3px; color: #a6b7d2; }
+.nc-header h1 { margin: 0; font-size: clamp(23px, 3.1vw, 36px); line-height: 1.2; font-weight: 900; letter-spacing: 1px; }
+.nc-close { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid #7284a4; background: transparent; color: var(--nc-paper); font-size: 27px !important; line-height: 1 !important; }
+.nc-roster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.nc-card { position: relative; min-width: 0; display: block; cursor: pointer; color: var(--nc-ink); }
+.nc-choice { position: absolute; left: 12px; top: 14px; width: 1px; height: 1px; opacity: 0; }
+.nc-card-inner { display: flex; height: 100%; flex-direction: column; background: var(--nc-paper); border: 3px solid #8d9bb2; box-shadow: 5px 5px 0 #020817; transition: border-color .12s, transform .12s; }
+.nc-choice:checked + .nc-card-inner { border-color: #6588ff; box-shadow: 0 0 0 2px var(--nc-blue), 5px 5px 0 #020817; }
+.nc-choice:focus-visible + .nc-card-inner { outline: 3px solid #ffd166; outline-offset: 4px; }
+.nc-card-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 2px solid var(--nc-ink); font: 700 11px/1.2 "Courier New", "Microsoft YaHei", monospace; letter-spacing: 2px; }
+.nc-check { width: 20px; height: 20px; display: grid; place-items: center; border: 2px solid var(--nc-ink); color: transparent; }
+.nc-choice:checked + .nc-card-inner .nc-check { background: var(--nc-blue); color: white; border-color: var(--nc-blue); }
+.nc-identity { display: flex; flex-direction: column; }
+.nc-portrait { height: 170px; display: flex; justify-content: center; overflow: hidden; background-color: #dae4ef; background-image: linear-gradient(90deg, #07142e09 1px, transparent 1px), linear-gradient(#07142e09 1px, transparent 1px); background-size: 12px 12px; border-bottom: 2px solid var(--nc-ink); }
+.nc-portrait img { height: 100%; max-width: 100%; width: auto; image-rendering: pixelated; }
+.nc-nameplate { padding: 12px 14px 4px; display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 10px; }
+.nc-nameplate strong { font-size: 29px; font-weight: 900; line-height: 1.3; }
+.nc-nameplate > span { font-size: 13px; font-weight: 700; }
+.nc-nameplate small { grid-column: 1 / -1; font-size: 11px; color: #526079; }
+.nc-info { padding: 0 14px 12px; display: flex; flex: 1; flex-direction: column; }
+.nc-intro { display: block; font-size: 14px; line-height: 1.6; min-height: 58px; padding-top: 8px; }
+.nc-trait { display: flex; flex-direction: column; gap: 3px; margin-top: auto; padding: 9px 10px; border-left: 4px solid var(--nc-accent); background: #07142e09; font-size: 13px; }
+.nc-trait b { font-size: 16px; }
+.nc-cost { display: block; font-size: 12px; margin-top: 9px; color: #714630; }
+.nc-cost b { margin-right: 4px; }
+.nc-card-bottom { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-top: 1px dashed #8792a2; font-size: 12px; }
+.nc-barcode { width: 56px; height: 15px; background: repeating-linear-gradient(90deg, var(--nc-ink) 0 2px, transparent 2px 4px, var(--nc-ink) 4px 5px, transparent 5px 8px); }
+.nc-select-label::after { content: "选择此人"; }
+.nc-choice:checked + .nc-card-inner .nc-select-label::after { content: "已选 · 待出发"; color: var(--nc-blue); font-weight: 800; }
+.nc-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; }
+.nc-selected-line { margin: 0; color: #c9d6ed; font-size: 14px; }
+.nc-confirm { min-width: 225px; min-height: 48px; padding: 10px 24px; border: 2px solid #8fa6ff; background: var(--nc-blue); color: white; font-weight: 800 !important; box-shadow: 4px 4px 0 #020817; }
+.nc-confirm:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #020817; }
+@media (hover: hover) { .nc-card:hover .nc-card-inner { transform: translateY(-2px); } }
+@media (max-height: 650px) and (min-width: 540px) {
+  .nc-screen { padding-top: 12px; padding-bottom: 12px; }
+  .nc-header { margin-bottom: 12px; }
+  .nc-header h1 { font-size: 25px; }
+  .nc-eyebrow { font-size: 10px; margin-bottom: 4px; }
+  .nc-roster { gap: 14px; }
+  .nc-portrait { height: 115px; }
+  .nc-nameplate { padding-top: 6px; }
+  .nc-nameplate strong { font-size: 24px; }
+  .nc-intro { min-height: 50px; font-size: 12px; }
+  .nc-trait { padding: 5px 8px; font-size: 12px; }
+  .nc-trait b { font-size: 14px; }
+  .nc-card-bottom { padding: 6px 12px; }
+  .nc-footer { margin-top: 14px; }
+}
+@media (max-height: 450px) and (min-width: 540px) {
+  .nc-screen { padding: 8px max(14px, env(safe-area-inset-right)) 8px max(14px, env(safe-area-inset-left)); }
+  .nc-header { margin-bottom: 8px; }
+  .nc-header h1 { font-size: 22px; }
+  .nc-close { height: 36px; width: 40px; }
+  .nc-card-top { padding: 4px 9px; font-size: 10px; }
+  .nc-identity { flex-direction: row; height: 78px; border-bottom: 1px solid #07142e22; }
+  .nc-portrait { height: 78px; width: 76px; flex-shrink: 0; border-bottom: 0; border-right: 1px solid #07142e22; }
+  .nc-nameplate { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 3px 8px; gap: 2px; }
+  .nc-nameplate strong { font-size: 24px; }
+  .nc-nameplate > span { font-size: 12px; }
+  .nc-nameplate small { display: none; }
+  .nc-info { padding: 0 9px 7px; }
+  .nc-intro { padding-top: 5px; min-height: 46px; line-height: 1.4; }
+  .nc-trait { padding: 4px 5px; gap: 0; }
+  .nc-cost { margin-top: 5px; font-size: 11px; }
+  .nc-card-bottom { padding: 4px 9px; font-size: 10px; }
+  .nc-barcode { height: 10px; }
+  .nc-footer { margin-top: 9px; }
+  .nc-confirm { min-height: 40px; padding: 5px 16px; font-size: 14px !important; }
+  .nc-selected-line { font-size: 12px; }
+}
+@media (max-width: 539px) {
+  .nc-roster { grid-template-columns: 1fr; gap: 16px; }
+  .nc-identity { flex-direction: row; height: 115px; border-bottom: 1px solid #07142e22; }
+  .nc-portrait { height: 115px; width: 120px; border: 0; border-right: 1px solid #07142e22; flex-shrink: 0; }
+  .nc-nameplate { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 10px; }
+  .nc-nameplate small { margin-top: 6px; }
+  .nc-intro { min-height: 0; padding-bottom: 8px; }
+  .nc-footer { flex-direction: column; align-items: stretch; }
+  .nc-confirm { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .nc-card-inner { transition: none; } }
