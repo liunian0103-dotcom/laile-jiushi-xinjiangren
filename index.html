@@ -31,12 +31,18 @@ SOFTWARE.
   <title>来了就是新疆人</title>
   <link rel="icon" href="assets/characters/chen-xu-portrait.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles/characters.css?v=6e8423f179">
-  <link rel="stylesheet" href="styles/rewards.css?v=bccc361b93">
-  <link rel="stylesheet" href="styles.css?v=5f12d74d60">
-  <link rel="stylesheet" href="styles/reward-feedback.css?v=c2acd53a7f">
+  <link rel="stylesheet" href="styles/characters.css?v=e50149db79">
+  <link rel="stylesheet" href="styles/rewards.css?v=2951058b75">
+  <link rel="stylesheet" href="styles.css?v=f94897d97c">
+  <link rel="stylesheet" href="styles/reward-feedback.css?v=ea91c38384">
+  <link rel="stylesheet" href="styles/viewport.css?v=df6c0137bb">
+  <link rel="stylesheet" href="styles/mobile-layout.css?v=d166aedb1c">
 </head>
 <body>
+<div id="viewport-safe-area" aria-hidden="true"></div>
+<div id="viewport-root">
+<div id="viewport-toolbar" hidden><span id="viewportModeLabel">网页横屏模式</span><button type="button" id="exitViewportMode">退出横屏</button></div>
+<div id="viewport-content">
 <main id="app" aria-label="来了就是新疆人游戏">
   <section id="game-shell">
     <canvas id="game" width="1280" height="720" aria-label="弹射游戏场地"></canvas>
@@ -79,7 +85,7 @@ SOFTWARE.
     </section>
 
     <section class="modal route-modal" id="routeModal" role="dialog" aria-modal="true" aria-label="新疆五站路线">
-      <div class="route-top"><button class="text-btn" data-go-home type="button">← 结束本局</button><span class="route-count" id="routeCount">已完成 0 / 5 站</span><button class="text-btn" data-open-shop type="button">新疆礼遇 · <b data-wallet-balance>0</b> 积分</button></div>
+      <div class="route-top"><button class="text-btn" data-go-home type="button">← 结束本局</button><span class="route-count" id="routeCount">已完成 0 / 5 站</span><div class="route-controls"><button class="text-btn" data-fullscreen type="button">横屏游玩 ↗</button><button class="text-btn" data-open-shop type="button">新疆礼遇 · <b data-wallet-balance>0</b> 积分</button></div></div>
       <div class="route-body"><div class="route-picture"><img id="routeImage" src="assets/optimized/stage-bazaar.webp" alt="国际大巴扎"></div><div class="route-copy"><p class="eyebrow">下一站</p><h2 id="routeStageName">国际大巴扎</h2><p id="routeTask">大巴扎集合</p><div class="route-detail"><span>本次出发 <b id="routeHeroName">陈序</b></span><strong id="routeReward">本关通关 +100 积分</strong></div><button class="primary-btn" id="routeStartBtn">开始本站 <span>→</span></button><p class="route-tip">清空障碍，别让它们越过底线。</p></div></div>
       <div class="route-stations" aria-label="五站进度"><span class="route-node-status active">国际大巴扎</span><span class="route-node-status locked">那拉提草原</span><span class="route-node-status locked">赛里木湖</span><span class="route-node-status locked">喀什古城</span><span class="route-node-status locked">火焰山</span></div>
     </section>
@@ -91,7 +97,10 @@ SOFTWARE.
     <section class="modal" id="endModal" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="paper-panel ending-panel"><p class="eyebrow" id="endKicker">五站突围完成</p><h2 id="endTitle">把远方，带回来。</h2><p id="endSoul" class="ending-soul"></p><p id="endSummary"></p><p id="endNote" hidden></p><div class="end-wallet">旅行积分 <strong data-wallet-balance>0</strong><button type="button" class="text-btn" data-open-shop>兑换新疆礼遇 ↗</button></div><button class="primary-btn" id="againBtn">再出发一次</button><button class="text-btn" data-go-home type="button">返回首页</button></div></section>
   </section>
   <aside class="mobile-browser-note" aria-label="手机游玩提示"><span>推荐使用手机浏览器打开，横屏体验更佳</span><small>首次打开可能需要更多时间，请稍候。</small></aside>
+  <aside id="portraitPlayHint"><span>展开横向视野，更方便瞄准</span><button type="button" data-fullscreen>横屏游玩 ↗</button></aside>
 </main>
 <div id="characterRoot"></div><div id="rewardsRoot"></div>
-<script src="src/characters.js?v=7f3f5c5aef"></script><script src="src/rewards.js?v=659561e249"></script><script src="src/reward-feedback.js?v=bf2c1adc9e"></script><script src="src/game.js?v=d40e0c0e93"></script>
+</div></div>
+<script src="src/viewport.js?v=99864e4347"></script>
+<script src="src/characters.js?v=7f3f5c5aef"></script><script src="src/rewards.js?v=659561e249"></script><script src="src/reward-feedback.js?v=bf2c1adc9e"></script><script src="src/game.js?v=c27778d6d4"></script>
 </body></html>

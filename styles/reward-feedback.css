@@ -15,5 +15,5 @@
 .departure-copy .points-redemption-hint{margin:.6cqh 0 2.5cqh;color:#b4c0c0;font-size:clamp(10px,1.05cqw,14px);line-height:1.5}
 .points-earned{animation:points-arrive .52s cubic-bezier(.2,.7,.2,1) both}
 @keyframes points-arrive{0%{opacity:.15;transform:translateY(8px) scale(.94)}60%{opacity:1;transform:translateY(0) scale(1.025)}100%{opacity:1;transform:none}}
-@media(max-height:450px) and (min-width:540px){.departure-copy .points-redemption-hint{margin-bottom:1.8cqh}.departure-copy .points-reward-line{gap:.6cqw}.points-hud{padding:.55cqw .8cqw}}
+@container viewport (max-height:450px) and (min-width:540px){.departure-copy .points-redemption-hint{margin-bottom:1.8cqh}.departure-copy .points-reward-line{gap:.6cqw}.points-hud{padding:.55cqw .8cqw}}
 @media(prefers-reduced-motion:reduce){.points-earned{animation:none}}

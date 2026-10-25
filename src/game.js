@@ -727,6 +727,7 @@ function showCombo() {
 }
 
 function pointerPosition(eventLike) {
+  if (window.XinjiangViewport) return window.XinjiangViewport.point(canvas, eventLike, W, H);
   const rect = canvas.getBoundingClientRect();
   return {
     x: (eventLike.clientX - rect.left) * (W / rect.width),
@@ -2153,36 +2154,8 @@ document.querySelectorAll("[data-open-coupons]").forEach(button => button.addEve
 renderSkillRack();
 updateHud();
 
-// Orientation is advisory only. Embedded browsers can report a stale viewport;
-// never put an orientation curtain in front of the playable game.
-function syncOrientation() {
-  const viewport = window.visualViewport;
-  const width = viewport?.width || window.innerWidth;
-  const height = viewport?.height || window.innerHeight;
-  document.body.classList.remove('force-portrait', 'force-landscape');
-  document.body.dataset.viewport = width >= height ? 'wide' : 'tall';
-}
-syncOrientation();
-window.addEventListener('resize', syncOrientation);
-window.addEventListener('orientationchange', syncOrientation);
-window.visualViewport?.addEventListener('resize', syncOrientation);
-window.screen?.orientation?.addEventListener?.('change', syncOrientation);
-document.querySelectorAll('[data-fullscreen]').forEach(button => button.addEventListener('click', async () => {
-  const element = document.documentElement;
-  try {
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
-      await (document.exitFullscreen?.() || document.webkitExitFullscreen?.());
-    } else if (element.requestFullscreen) {
-      await element.requestFullscreen();
-      try { await window.screen?.orientation?.lock?.('landscape'); } catch (_) {}
-    } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
-    } else {
-      showToast('此浏览器不支持全屏，可以直接游玩');
-    }
-  } catch (_) { showToast('可以直接游玩，或使用浏览器菜单进入全屏'); }
-  syncOrientation();
-}));
+// A resize cancels only the current gesture; the run, projectiles and wallet persist.
+window.addEventListener("xinjiangviewportchange", () => { dragging = false; pointer.visible = false; });
 
 requestAnimationFrame(loop);
 

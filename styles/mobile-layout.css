@@ -1,0 +1,145 @@
+/* A menu is a readable page in logical portrait. The battle keeps its 16:9 board. */
+html:has(.modal.open, .nc-screen:not([hidden]), .niuma-rewards:not([hidden])),
+body:has(.modal.open, .nc-screen:not([hidden]), .niuma-rewards:not([hidden])),
+#viewport-root:has(.modal.open, .nc-screen:not([hidden]), .niuma-rewards:not([hidden])),
+#viewport-content:has(.modal.open, .nc-screen:not([hidden]), .niuma-rewards:not([hidden])) {
+  touch-action: auto;
+}
+#viewport-content .modal,
+#viewport-content .nc-screen,
+#viewport-content .niuma-rewards,
+#viewport-content .nr-sheet,
+#viewport-content .nr-dialog {
+  /* Browser gesture axes stay physical when the whole page rotates. */
+  touch-action: auto;
+}
+
+@container viewport (max-width: 539px) and (orientation: portrait) {
+  #app { min-width: 0; }
+  #game-shell:has(.modal.open) { width: 100%; height: 100%; min-height: 0; align-self: stretch; touch-action: auto; }
+  #game-shell:has(.modal.open) > #game { visibility: hidden; }
+  #game-shell .modal.open { display: block; padding: 18px 14px 28px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: auto; }
+  #game-shell .modal button { min-height: 44px; }
+  #game-shell .modal .primary-btn { min-height: 48px; padding: 12px 16px; font-size: 16px; }
+  #game-shell .modal .text-btn { font-size: 13px; }
+  #game-shell .modal .eyebrow { margin-bottom: 10px; font-size: 11px; letter-spacing: 2px; }
+  #game-shell .modal .paper-panel { width: 100%; max-width: 440px; max-height: none; margin: 0 auto; padding: 22px 16px; }
+  #game-shell .modal .paper-panel h2 { font-size: 28px; line-height: 1.25; letter-spacing: -.6px; }
+
+  /* Keep the browser note in its own row; it never floats over the title or CTA. */
+  #app:has(#startModal.open) { display: flex; flex-direction: column; align-items: stretch; }
+  #app:has(#startModal.open) > #game-shell { width: 100%; height: 0; min-height: 0; flex: 1 1 0; }
+  #app:has(#startModal.open) > .mobile-browser-note { position: static; order: -1; flex: 0 0 auto; display: flex; flex-direction: column; gap: 2px; transform: none; width: 100%; max-width: none; padding: 7px 12px; border: 0; border-bottom: 1px solid #46535a66; background: #101d26; text-align: center; font-size: 11px; line-height: 1.4; color: #f4eddc; }
+  #app:has(#startModal.open) > .mobile-browser-note small { font-size: 10px; }
+  #game-shell #startModal.open { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; padding: 0 0 14px; }
+  #startModal .home-scene { position: relative; inset: auto; order: 0; flex: 0 0 auto; width: 100%; height: clamp(130px,24cqh,190px); min-height: 130px; background-position: center 52%; }
+  #startModal .home-scene:before { background: linear-gradient(0deg,#101d26 0%,#101d2610 55%); }
+  #startModal .home-travelers { left: 20%; right: 20%; bottom: 8px; gap: 4%; }
+  #startModal .home-travelers img { width: 27%; max-width: 72px; }
+  #startModal .home-travelers img:nth-child(2) { width: 30%; max-width: 80px; }
+  #startModal .home-content { order: 1; width: 100%; flex: 0 0 auto; padding: 16px 20px 0; justify-content: flex-start; }
+  #startModal .home-content .eyebrow { font-size: 11px; letter-spacing: 3px; margin: 0 0 12px; }
+  #gameTitle { font-size: clamp(40px,12.5cqw,56px); line-height: 1.02; letter-spacing: .02em; }
+  #startModal .home-line { font-size: 15px; line-height: 1.5; margin: 16px 0 18px; letter-spacing: .04em; }
+  #startModal .cover-controls { width: 100%; max-width: none; }
+  #startModal .cover-controls .primary-btn { width: 100%; min-height: 48px; font-size: 17px; padding: 12px 18px; }
+  #startModal .loading-copy { font-size: 13px; }
+  #startModal .loading-track { height: 4px; margin: 10px 0; }
+  #startModal .first-load-note { font-size: 12px; }
+  #startModal .home-links { justify-content: space-between; gap: 16px; margin-top: 8px; }
+  #startModal .home-links button { min-height: 44px; padding: 10px 0; font-size: 14px; }
+  #startModal .home-footer { position: static; order: 2; flex: 0 0 auto; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 8px 20px 0; font-size: 11px; line-height: 1.5; letter-spacing: 0; }
+  #startModal .home-footer .fullscreen-btn { min-height: 44px; margin-left: 12px; font-size: 12px; }
+
+  /* Every route section stays in normal flow; the five stops remain reachable by scrolling. */
+  #game-shell #routeModal.open { padding: 14px 16px 28px; background: #101d26; }
+  #routeModal .route-top { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; width: 100%; padding-bottom: 8px; border-bottom: 1px solid #46535a; }
+  #routeModal .route-top > button { margin: 0; min-height: 44px; text-align: left; font-size: 13px; }
+  #routeModal .route-top > button:last-child { grid-column: 2; grid-row: 1; text-align: right; }
+  #routeModal .route-count { grid-column: 1; grid-row: 2; align-self: center; padding: 7px 0; border: 0; font-size: 12px; }
+  #routeModal .route-controls { display: contents; }
+  #routeModal .route-controls > button { min-height: 44px; justify-self: end; text-align: right; white-space: nowrap; padding: 8px 0; }
+  #routeModal .route-controls > button:first-child { grid-column: 2; grid-row: 1; font-size: 13px; }
+  #routeModal .route-controls > button:last-child { grid-column: 2; grid-row: 2; font-size: 12px; }
+  #routeModal .route-body { display: flex; flex: 0 0 auto; flex-direction: column; gap: 16px; align-items: stretch; width: 100%; min-height: 0; margin-top: 14px; }
+  #routeModal .route-picture { width: 100%; height: clamp(120px,24cqh,190px); max-height: none; min-height: 120px; flex: 0 0 auto; }
+  #routeModal .route-copy { width: 100%; }
+  #routeModal .route-copy h2 { font-size: 30px; line-height: 1.25; }
+  #routeModal .route-copy > p:not(.eyebrow) { font-size: 14px; line-height: 1.5; margin-top: 8px; }
+  #routeModal .route-detail { gap: 10px; margin: 16px 0; font-size: 14px; line-height: 1.45; }
+  #routeModal .route-detail strong { font-weight: 700; }
+  #routeModal .route-copy .primary-btn { width: 100%; min-width: 0; min-height: 48px; }
+  #routeModal .route-copy .route-tip { font-size: 12px !important; margin-top: 12px; }
+  #routeModal .route-stations { display: grid; grid-template-columns: 1fr; flex: 0 0 auto; gap: 0; width: 100%; padding: 0 0 4px 6px; margin-top: 24px; }
+  #routeModal .route-node-status { min-height: 45px; padding: 12px 12px 12px 21px; border-top: 0; border-left: 1px solid #46535a; text-align: left; font-size: 14px; line-height: 1.5; color: #a4afb3; }
+  #routeModal .route-node-status:before { top: 19px; left: -5px; }
+  #routeModal .route-node-status.active { color: #e9b95e; }
+  #routeModal .route-node-status.completed { color: #b9cebc; }
+
+  /* Decisions can be read and selected without shrinking text to fit one short strip. */
+  #game-shell .upgrade-sub { font-size: 14px; line-height: 1.5; margin: 12px 0 18px; }
+  #game-shell .upgrade-grid, #game-shell .skill-learn-grid { grid-template-columns: 1fr; gap: 12px; }
+  #game-shell .upgrade-card, #game-shell .skill-learn-card { width: 100%; min-height: 44px; padding: 18px 16px; }
+  #game-shell .upgrade-card b, #game-shell .skill-card-top b { font-size: 19px; }
+  #game-shell .upgrade-card small, #game-shell .skill-learn-card > small { font-size: 14px; line-height: 1.6; }
+  #game-shell .upgrade-icon { font-size: 28px; margin-bottom: 12px; }
+  #game-shell .skill-card-top { gap: 10px; margin-bottom: 12px; }
+  #game-shell .skill-learn-icon { width: 30px; }
+  #game-shell .skill-main-effect { font-size: 21px; line-height: 1.3; margin-bottom: 10px; }
+  #game-shell .skill-value-change { font-size: 12px; padding-top: 16px; }
+  #game-shell .skill-learn-card em { font-size: 11px; }
+  #game-shell .compact-panel { margin: 14px auto; }
+  #game-shell .compact-panel h2 { margin-bottom: 20px; }
+  #game-shell .compact-panel button { min-height: 44px; margin: 8px 0; font-size: 14px; }
+  #game-shell .departure-panel { display: block; width: 100%; max-width: 440px; max-height: none; margin: 0 auto; overflow: visible; }
+  #game-shell .departure-scene { height: 170px; min-height: 0; }
+  #game-shell .departure-copy { padding: 22px 18px; }
+  #game-shell .departure-copy h2 { font-size: 28px; line-height: 1.3; }
+  #game-shell .departure-copy blockquote { font-size: 14px; line-height: 1.6; margin: 12px 0; }
+  #game-shell .stage-reward { font-size: 30px; margin: 4px 0 18px; }
+  #game-shell .points-earned-amount { font-size: 48px; }
+  #game-shell .points-earned-unit { font-size: 15px; }
+  #game-shell .departure-copy .points-redemption-hint { font-size: 12px; line-height: 1.6; margin: 8px 0 18px; }
+  #game-shell .departure-copy .primary-btn { width: 100%; }
+  #game-shell .ending-soul { margin: 18px 0 12px; font-size: 15px; line-height: 1.7; }
+  #game-shell .ending-panel #endSummary { font-size: 13px; line-height: 1.7; }
+  #game-shell .end-wallet { flex-wrap: wrap; margin: 22px 0; gap: 10px; font-size: 14px; }
+  #game-shell .end-wallet strong { font-size: 34px; }
+  #game-shell .ending-panel > .primary-btn { width: 100%; min-width: 0; }
+  #game-shell:has(.modal.open) .toast { bottom: 16px; max-width: calc(100% - 32px); font-size: 12px; }
+
+  /* The independent full-screen modules share the same scroll and target rules. */
+  .nc-screen { padding: 20px 14px; align-items: flex-start; overflow-x: hidden; overflow-y: auto; touch-action: auto; -webkit-overflow-scrolling: touch; }
+  .nc-panel { margin: 0 auto; }
+  .nc-header { gap: 10px; margin-bottom: 18px; }
+  .nc-header h1 { font-size: 25px; }
+  .nc-close { width: 44px; height: 44px; }
+  .nc-roster { grid-template-columns: 1fr; gap: 14px; }
+  .nc-info { padding: 8px 16px 16px; }
+  .nc-intro { min-height: 0; margin-bottom: 10px; font-size: 14px; line-height: 1.6; }
+  .nc-trait b { font-size: 17px; }
+  .nc-trait span, .nc-cost { font-size: 13px; }
+  .nc-footer { margin-top: 18px; padding-bottom: 12px; }
+  .nc-confirm { width: 100%; min-width: 0; min-height: 48px; font-size: 16px !important; }
+  .niuma-rewards { padding: 10px; place-items: stretch; touch-action: auto; }
+  .niuma-rewards .nr-sheet { width: 100%; max-height: 100%; padding: 16px; overflow-x: hidden; overflow-y: auto; touch-action: auto; -webkit-overflow-scrolling: touch; }
+  .niuma-rewards h2 { font-size: 25px; line-height: 1.3; }
+  .niuma-rewards .nr-disclaimer { font-size: 12px; line-height: 1.5; }
+  .niuma-rewards .nr-wallet { flex-direction: column; align-items: stretch; gap: 7px; padding: 12px 0; }
+  .niuma-rewards .nr-wallet > div { display: flex; align-items: baseline; gap: 12px; }
+  .niuma-rewards .nr-wallet strong { display: inline; font-size: 32px; }
+  .niuma-rewards .nr-wallet p { max-width: none; font-size: 12px; }
+  .niuma-rewards .nr-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .niuma-rewards .nr-tabs { gap: 20px; }
+  .niuma-rewards .nr-tabs button, .niuma-rewards .nr-ticket-bottom button, .niuma-rewards .nr-close { min-height: 44px; }
+  .niuma-rewards .nr-ticket-bottom { padding: 10px 8px; }
+  .niuma-rewards .nr-ticket-bottom button { font-size: 12px; }
+  .niuma-rewards h3 { font-size: 15px; }
+  .niuma-rewards .nr-value { gap: 4px; }
+  .niuma-rewards .nr-value strong { font-size: 38px; }
+  .niuma-rewards .nr-value span { font-size: 11px; }
+  .niuma-rewards .nr-dialog-backdrop { padding: 12px; }
+  .niuma-rewards .nr-dialog { max-height: 100%; padding: 20px 16px; overflow-y: auto; touch-action: auto; }
+  .niuma-rewards .nr-dialog h3 { font-size: 23px; }
+  .niuma-rewards .nr-actions { flex-wrap: wrap; gap: 10px; }
+}

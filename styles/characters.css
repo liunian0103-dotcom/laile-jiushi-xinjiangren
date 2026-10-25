@@ -25,7 +25,7 @@ html:has(.nc-screen:not([hidden])) { touch-action: pan-y; }
 .nc-panel { width: min(1060px, 100%); margin: auto; min-width: 0; }
 .nc-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 22px; }
 .nc-eyebrow { margin: 0 0 6px; font: 700 12px/1.2 "Courier New", "Microsoft YaHei", monospace; letter-spacing: 3px; color: #a6b7d2; }
-.nc-header h1 { margin: 0; font-size: clamp(23px, 3.1vw, 36px); line-height: 1.2; font-weight: 900; letter-spacing: 1px; }
+.nc-header h1 { margin: 0; font-size: clamp(23px, 3.1cqw, 36px); line-height: 1.2; font-weight: 900; letter-spacing: 1px; }
 .nc-close { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid #7284a4; background: transparent; color: var(--nc-paper); font-size: 27px !important; line-height: 1 !important; }
 .nc-roster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .nc-card { position: relative; min-width: 0; display: block; cursor: pointer; color: var(--nc-ink); }
@@ -58,7 +58,7 @@ html:has(.nc-screen:not([hidden])) { touch-action: pan-y; }
 .nc-confirm { min-width: 225px; min-height: 48px; padding: 10px 24px; border: 2px solid #8fa6ff; background: var(--nc-blue); color: white; font-weight: 800 !important; box-shadow: 4px 4px 0 #020817; }
 .nc-confirm:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #020817; }
 @media (hover: hover) { .nc-card:hover .nc-card-inner { transform: translateY(-2px); } }
-@media (max-height: 650px) and (min-width: 540px) {
+@container viewport (max-height: 650px) and (min-width: 540px) {
   .nc-screen { padding-top: 12px; padding-bottom: 12px; }
   .nc-header { margin-bottom: 12px; }
   .nc-header h1 { font-size: 25px; }
@@ -73,7 +73,7 @@ html:has(.nc-screen:not([hidden])) { touch-action: pan-y; }
   .nc-card-bottom { padding: 6px 12px; }
   .nc-footer { margin-top: 14px; }
 }
-@media (max-height: 450px) and (min-width: 540px) {
+@container viewport (max-height: 450px) and (min-width: 540px) {
   .nc-screen { padding: 8px max(14px, env(safe-area-inset-right)) 8px max(14px, env(safe-area-inset-left)); }
   .nc-header { margin-bottom: 8px; }
   .nc-header h1 { font-size: 22px; }
@@ -95,7 +95,7 @@ html:has(.nc-screen:not([hidden])) { touch-action: pan-y; }
   .nc-confirm { min-height: 40px; padding: 5px 16px; font-size: 14px !important; }
   .nc-selected-line { font-size: 12px; }
 }
-@media (max-width: 539px) {
+@container viewport (max-width: 539px) {
   .nc-roster { grid-template-columns: 1fr; gap: 16px; }
   .nc-identity { flex-direction: row; height: 115px; border-bottom: 1px solid #07142e22; }
   .nc-portrait { height: 115px; width: 120px; border: 0; border-right: 1px solid #07142e22; flex-shrink: 0; }

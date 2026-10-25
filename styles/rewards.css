@@ -9,7 +9,7 @@
 .niuma-rewards .nr-sheet { width:min(960px,100%); max-height:100%; overflow:auto; overscroll-behavior:contain; background:var(--nr-paper); border:3px solid var(--nr-ink); box-shadow:7px 7px 0 #123bee; padding:24px; }
 .niuma-rewards .nr-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .niuma-rewards .nr-eyebrow { color:var(--nr-blue); font-size:12px; font-weight:800; letter-spacing:2px; }
-.niuma-rewards h2 { font:900 clamp(23px,4vw,34px)/1.4 "Microsoft YaHei", sans-serif; letter-spacing:-1px; }
+.niuma-rewards h2 { font:900 clamp(23px,4cqw,34px)/1.4 "Microsoft YaHei", sans-serif; letter-spacing:-1px; }
 .niuma-rewards .nr-close { width:44px; flex:none; padding:0; font-size:26px; background:var(--nr-ink); }
 .niuma-rewards .nr-disclaimer { background:var(--nr-gold); padding:9px 12px; border:2px solid var(--nr-ink); margin-top:14px; font-weight:800; }
 .niuma-rewards .nr-wallet { margin:16px 0; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px 16px; background:var(--nr-blue); color:white; border:2px solid var(--nr-ink); }
@@ -56,6 +56,6 @@
 .niuma-rewards .nr-dialog p { margin-top:10px; }
 .niuma-rewards .nr-actions { margin-top:20px; display:flex; justify-content:flex-end; gap:10px; }
 .niuma-rewards .nr-secondary { background:white; color:var(--nr-ink); }
-@media (max-width:760px) { .niuma-rewards .nr-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .niuma-rewards .nr-sheet { padding:16px; } }
-@media (max-width:400px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:12px; } .niuma-rewards .nr-grid { gap:10px; } .niuma-rewards .nr-wallet { align-items:flex-start; } .niuma-rewards .nr-wallet > div { display:block; } .niuma-rewards .nr-wallet strong { display:block; } .niuma-rewards .nr-wallet p { max-width:120px; } .niuma-rewards h3 { font-size:15px; } .niuma-rewards .nr-value { gap:4px; } .niuma-rewards .nr-value strong { font-size:40px; } }
-@media (max-height:500px) and (min-width:650px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:14px; } .niuma-rewards .nr-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .niuma-rewards .nr-icon { font-size:26px; margin-bottom:6px; } }
+@container viewport (max-width:760px) { .niuma-rewards .nr-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .niuma-rewards .nr-sheet { padding:16px; } }
+@container viewport (max-width:400px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:12px; } .niuma-rewards .nr-grid { gap:10px; } .niuma-rewards .nr-wallet { align-items:flex-start; } .niuma-rewards .nr-wallet > div { display:block; } .niuma-rewards .nr-wallet strong { display:block; } .niuma-rewards .nr-wallet p { max-width:120px; } .niuma-rewards h3 { font-size:15px; } .niuma-rewards .nr-value { gap:4px; } .niuma-rewards .nr-value strong { font-size:40px; } }
+@container viewport (max-height:500px) and (min-width:650px) { .niuma-rewards { padding:8px; } .niuma-rewards .nr-sheet { padding:14px; } .niuma-rewards .nr-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .niuma-rewards .nr-icon { font-size:26px; margin-bottom:6px; } }
