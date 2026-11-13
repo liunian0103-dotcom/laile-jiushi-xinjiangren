@@ -28,6 +28,23 @@ SOFTWARE.
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#101d26">
   <meta name="description" content="选一个打工人，打穿五站新疆。来了就是新疆人，一款即开即玩的像素弹射小游戏。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="来了就是新疆人">
+  <meta property="og:title" content="来了就是新疆人">
+  <meta property="og:description" content="下班了，轮到你出发。选一个打工人，打穿五站新疆，即开即玩的像素弹射小游戏。">
+  <meta property="og:url" content="https://liunian0103-dotcom.github.io/laile-jiushi-xinjiangren/">
+  <meta property="og:image" content="https://liunian0103-dotcom.github.io/laile-jiushi-xinjiangren/assets/xinjiang-cover-20261113.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1672">
+  <meta property="og:image:height" content="941">
+  <meta property="og:image:alt" content="来了就是新疆人：四位旅行者望向雪山与蓝色湖泊的像素封面">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="来了就是新疆人">
+  <meta name="twitter:description" content="下班了，轮到你出发。即开即玩的新疆像素弹射小游戏。">
+  <meta name="twitter:image" content="https://liunian0103-dotcom.github.io/laile-jiushi-xinjiangren/assets/xinjiang-cover-20261113.jpg">
+  <link rel="image_src" href="https://liunian0103-dotcom.github.io/laile-jiushi-xinjiangren/assets/xinjiang-cover-20261113.jpg">
+  <link rel="preload" as="image" href="assets/xinjiang-cover-20261113.jpg">
   <title>来了就是新疆人</title>
   <link rel="icon" href="assets/characters/chen-xu-portrait.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
@@ -37,6 +54,7 @@ SOFTWARE.
   <link rel="stylesheet" href="styles/reward-feedback.css?v=ea91c38384">
   <link rel="stylesheet" href="styles/viewport.css?v=1a29bddfaf">
   <link rel="stylesheet" href="styles/mobile-layout.css?v=d166aedb1c">
+  <link rel="stylesheet" href="styles/home-cover.css?v=20261113a">
 </head>
 <body>
 <div id="viewport-safe-area" aria-hidden="true"></div>
@@ -69,7 +87,7 @@ SOFTWARE.
     </aside>
 
     <section class="modal open" id="startModal" role="dialog" aria-modal="true" aria-labelledby="gameTitle">
-      <div class="home-scene" aria-hidden="true"><div class="home-travelers"><img src="assets/characters/lu-xiao.svg" alt=""><img src="assets/characters/chen-xu.svg" alt=""><img src="assets/characters/lin-wan.svg" alt=""></div></div>
+      <div class="home-scene" aria-hidden="true"><img class="home-cover-art" src="assets/xinjiang-cover-20261113.jpg" width="1672" height="941" alt="" fetchpriority="high"></div>
       <div class="home-content">
         <p class="eyebrow">打工人的新疆旅行</p>
         <h1 id="gameTitle">来了就是<br>新疆人<span class="title-dot">.</span></h1>
