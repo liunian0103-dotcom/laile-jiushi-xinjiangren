@@ -1,0 +1,25 @@
+/* Selected cover, 2026-11-13. Scoped to the opening screen. */
+#startModal .home-scene { inset: 0; background: none; }
+#startModal .home-scene::before { display: none; }
+#startModal .home-cover-art { display: block; width: 100%; height: 100%; object-fit: contain; }
+#startModal .home-content { position: absolute; left: 2.5%; bottom: 3%; width: 28%; padding: 0; }
+#startModal .home-content > .eyebrow,
+#startModal .home-line { display: none; }
+#startModal #gameTitle { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+#startModal .cover-controls { width: 100%; max-width: 350px; padding: 10px; background: #101d26ed; border: 1px solid #ffffff38; border-radius: 8px; box-shadow: 0 3px 16px #0003; }
+#startModal .cover-controls .primary-btn { min-height: 44px; padding: 10px 14px; }
+#startModal .home-links { margin-top: 5px; gap: 16px; justify-content: center; }
+#startModal .home-links button { font-size: clamp(11px, 1.15cqw, 16px); }
+#startModal .home-footer { left: auto; right: 2.5%; bottom: 3%; padding: 4px 10px; border-radius: 5px; background: #101d26ed; color: #e5ecec; flex-direction: column; align-items: flex-end; gap: 0; }
+#startModal .home-footer .text-btn { padding: 4px; color: var(--gold); }
+
+@container viewport (max-width: 539px) and (orientation: portrait) {
+  #startModal .home-scene { position: relative; inset: auto; width: 100%; height: auto; min-height: 0; aspect-ratio: 1672 / 941; flex: 0 0 auto; }
+  #startModal .home-cover-art { width: 100%; height: auto; }
+  #startModal .home-content { position: relative; left: auto; bottom: auto; width: 100%; padding: 20px; align-items: center; }
+  #startModal .home-line { display: block; margin: 0 0 18px; text-align: center; }
+  #startModal .cover-controls { width: 100%; max-width: 350px; padding: 14px; }
+  #startModal .home-links { margin-top: 10px; }
+  #startModal .home-links button { font-size: 14px; }
+  #startModal .home-footer { position: relative; inset: auto; margin: auto 20px 0; padding: 8px 0; flex-direction: row; justify-content: space-between; align-items: center; font-size: 11px; }
+}
