@@ -1,0 +1,66 @@
+/* Travel controls: sunlight gold for the next step, lake blue for supporting actions. */
+:root { --button-edge: #88602d; --button-light: #fff2c9; --button-secondary: #234653; }
+#game-shell .primary-btn, .nc-screen .nc-confirm {
+  min-height: 48px; padding: 11px 20px; border: 2px solid var(--button-edge);
+  border-radius: 4px; background: var(--gold); color: var(--ink);
+  font-weight: 800; letter-spacing: .035em;
+  box-shadow: inset 0 2px 0 var(--button-light), inset 0 -2px 0 #c99240, 0 4px 0 #644820;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color 90ms ease-out;
+}
+#game-shell .secondary-btn, #startModal .home-links button,
+#game-shell .route-controls .text-btn, #startModal .fullscreen-btn,
+#game-shell .square-btn, .nc-screen .nc-close {
+  min-height: 48px; border: 2px solid #658592; border-radius: 4px;
+  background: var(--button-secondary); color: #e7eef0;
+  box-shadow: inset 0 2px 0 #ffffff15, 0 3px 0 #09191f;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color 90ms ease-out;
+}
+#game-shell .secondary-btn { padding: 10px 16px; }
+#game-shell #startModal .cover-controls .primary-btn { min-height: 48px; padding: 10px 14px; }
+#startModal .cover-controls .primary-btn::before {
+  content: ""; width: 11px; height: 13px; flex: 0 0 auto; background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+#startModal .cover-controls .primary-btn { gap: 10px; }
+#startModal .cover-controls .primary-btn > span { margin-left: auto; }
+#startModal .home-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+#startModal .home-links button { padding: 6px 4px; font-size: clamp(11px, 1.1cqw, 14px); white-space: nowrap; }
+#startModal .home-links button span { color: var(--button-light); }
+#game-shell #startModal .home-footer .fullscreen-btn { min-height: 48px; margin-left: 8px; padding: 7px 10px; font-size: 12px; }
+#game-shell .route-controls .text-btn { padding: 7px 10px; }
+#game-shell .square-btn, .nc-screen .nc-close { width: 48px; height: 48px; padding: 0; font-size: 22px; }
+#game-shell .compact-panel { max-height: 95%; overflow-y: auto; }
+#game-shell .compact-panel button { margin: 8px 0; }
+#game-shell .primary-btn:active:not(:disabled), .nc-screen .nc-confirm:active:not(:disabled) {
+  transform: translateY(3px); box-shadow: inset 0 2px 0 #c99240, 0 1px 0 #644820;
+}
+#game-shell .secondary-btn:active:not(:disabled), #startModal .home-links button:active,
+#game-shell .route-controls .text-btn:active, #startModal .fullscreen-btn:active,
+#game-shell .square-btn:active, .nc-screen .nc-close:active {
+  transform: translateY(2px); box-shadow: inset 0 2px 0 #09191f, 0 1px 0 #09191f;
+}
+#game-shell button:focus-visible, .nc-screen button:focus-visible {
+  outline: 3px solid var(--button-light); outline-offset: 4px;
+}
+#game-shell .primary-btn:disabled, .nc-screen .nc-confirm:disabled {
+  background: #687477; border-color: #49575b; color: #d8dfe0; box-shadow: none;
+  opacity: 1; cursor: not-allowed;
+}
+@media (hover: hover) {
+  #game-shell .primary-btn:hover:not(:disabled), .nc-screen .nc-confirm:hover:not(:disabled) { background: #f4ca78; }
+  #game-shell .secondary-btn:hover:not(:disabled), #startModal .home-links button:hover,
+  #game-shell .route-controls .text-btn:hover, #startModal .fullscreen-btn:hover,
+  #game-shell .square-btn:hover, .nc-screen .nc-close:hover { background: #315c6b; border-color: #a9cbd7; }
+}
+@container viewport (max-width: 539px) and (orientation: portrait) {
+  #startModal .home-links button { font-size: 14px; }
+  #startModal .home-footer { align-items: flex-end; gap: 8px; }
+  #startModal .home-footer > span:first-child { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  #game-shell #startModal .home-footer .fullscreen-btn { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #game-shell button, .nc-screen button { transition: none; }
+}
+@media (orientation: landscape) and (pointer: coarse) {
+  #app:has(#startModal.open) > .mobile-browser-note { display: none; }
+}
