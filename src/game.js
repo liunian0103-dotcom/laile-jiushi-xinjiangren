@@ -303,6 +303,8 @@ let introShown = false;
 let metroMapShown = false;
   document.querySelector("#game-shell").classList.remove("cinematic");
 let audio = null;
+let masterGain = null;
+const MASTER_VOLUME = 1.5;
 let assetsReady = false;
 let volleyElapsed = 0;
 let lastImpactAt = 0;
@@ -560,7 +562,12 @@ function setupLevel() {
 function initAudio() {
   if (audio) return;
   const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (AudioContext) audio = new AudioContext();
+  if (AudioContext) {
+    audio = new AudioContext();
+    masterGain = audio.createGain();
+    masterGain.gain.value = MASTER_VOLUME;
+    masterGain.connect(audio.destination);
+  }
 }
 
 function beep(frequency = 280, duration = 0.045, type = "square", volume = 0.025) {
@@ -571,7 +578,8 @@ function beep(frequency = 280, duration = 0.045, type = "square", volume = 0.025
   osc.frequency.setValueAtTime(frequency, audio.currentTime);
   gain.gain.setValueAtTime(volume, audio.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + duration);
-  osc.connect(gain).connect(audio.destination);
+  osc.connect(gain).connect(masterGain);
+  osc.onended = () => { osc.disconnect(); gain.disconnect(); };
   osc.start();
   osc.stop(audio.currentTime + duration);
 }
@@ -1417,7 +1425,6 @@ function drawDukuBackground() {
 }
 
 function draw() {
-  canvas.dataset.state = mode;
   if (mode === "metromap") {
     if (metroMapImg.complete && metroMapImg.naturalWidth) {
       ctx.drawImage(metroMapImg, 0, 0, W, H);
@@ -1786,7 +1793,40 @@ function drawAim() {
   ctx.restore();
 }
 
+// Cache only collision geometry. The animated dashes and reticle still render each frame.
+let aimPathCache = null;
 function traceAimPath(maxDistance) {
+  const c = aimPathCache;
+  let unchanged = c && c.distance === maxDistance && c.x === aim.x && c.y === aim.y
+    && c.blocks.length === blocks.length && c.gates.length === gates.length;
+  if (unchanged) {
+    for (let i = 0; i < blocks.length; i++) {
+      const b = blocks[i], old = c.blocks[i];
+      if (b.id !== old.id || b.x !== old.x || b.y !== old.y || b.w !== old.w || b.h !== old.h) {
+        unchanged = false;
+        break;
+      }
+    }
+  }
+  if (unchanged) {
+    for (let i = 0; i < gates.length; i++) {
+      if (gates[i].x !== c.gates[i].x || gates[i].y !== c.gates[i].y) {
+        unchanged = false;
+        break;
+      }
+    }
+  }
+  if (unchanged) return c.segments;
+  const segments = calculateAimPath(maxDistance);
+  aimPathCache = {
+    distance: maxDistance, x: aim.x, y: aim.y, segments,
+    blocks: blocks.map(({ id, x, y, w, h }) => ({ id, x, y, w, h })),
+    gates: gates.map(({ x, y }) => ({ x, y })),
+  };
+  return segments;
+}
+
+function calculateAimPath(maxDistance) {
   const segments = [];
   const probe = { x: LAUNCH.x, y: LAUNCH.y, vx: aim.x, vy: aim.y, r: 14 };
   let start = { x: probe.x, y: probe.y };
@@ -1957,6 +1997,11 @@ function drawEffects() {
   }
 }
 
+function syncCanvasData(name, value) {
+  const text = String(value);
+  if (canvas.dataset[name] !== text) canvas.dataset[name] = text;
+}
+
 function loop(time) {
   const dt = Math.min(0.033, (time - lastTime) / 1000 || 0);
   lastTime = time;
@@ -1966,16 +2011,18 @@ function loop(time) {
     fpsFrames = 0;
     fpsWindowStart = time;
   }
-  canvas.dataset.state = mode;
-  canvas.dataset.level = String(level);
-  canvas.dataset.blocks = String(blocks.length);
-  canvas.dataset.aim = `${aim.x.toFixed(3)},${aim.y.toFixed(3)}`;
-  canvas.dataset.pickups = String(pickups.filter(item => item.alive).length);
-  canvas.dataset.gates = String(gates.length);
-  canvas.dataset.pendingLoot = String(pendingLoot);
-  canvas.dataset.learnedSkills = String(Object.values(learnedSkills).filter(value => value > 0).length);
+  syncCanvasData("state", mode);
+  syncCanvasData("level", level);
+  syncCanvasData("blocks", blocks.length);
+  syncCanvasData("aim", `${aim.x.toFixed(3)},${aim.y.toFixed(3)}`);
+  syncCanvasData("pickups", pickups.filter(item => item.alive).length);
+  syncCanvasData("gates", gates.length);
+  syncCanvasData("pendingLoot", pendingLoot);
+  syncCanvasData("learnedSkills", Object.values(learnedSkills).filter(value => value > 0).length);
   update(dt, time / 1000);
-  draw();
+  // These two pages cover the entire canvas with an opaque scene.
+  // Keep physics and all visible in-game effects running at their original rate.
+  if (!document.hidden && mode !== "menu" && mode !== "route") draw();
   requestAnimationFrame(loop);
 }
 
